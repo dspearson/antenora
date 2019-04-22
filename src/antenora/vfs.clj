@@ -1,14 +1,18 @@
 (ns antenora.vfs
   (:require [phlegyas.types :refer :all]
             [phlegyas.vfs :as pvfs]
+            [phlegyas.util :refer :all]
             [phlegyas.state :as ps]))
 
 (defn server-control
-  [stat frame state]
-  (with-bindings
-    (println offset)))
+  [stat frame connection]
+  (with-frame-bindings frame
+    (do
+      (if (> (:offset frame) 0)
+        (byte-array 0)
+        (.getBytes "control file" "UTF-8")))))
 
-(defn filesystem!
+(defn control-plane
   []
   (let [root-fs (pvfs/create-filesystem)
         root-path (:root-path root-fs)]
